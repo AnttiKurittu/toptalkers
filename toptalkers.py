@@ -1,4 +1,4 @@
-import os, sys, re, operator, collections, time
+import os, sys, re, operator
 
 # Define a function for printing
 def echo(t):
