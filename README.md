@@ -1,7 +1,7 @@
 # toptalkers
 Get the top talkers from a log file.
 
-'''bash
+```bash
 $ python toptalkers.py access.log
 
      IP address  hits
@@ -10,4 +10,4 @@ $ python toptalkers.py access.log
   xx.xx.xxx.231   138 ::::::
  xxx.xx.xxx.146    25 :
             All  2200
-'''
+```
