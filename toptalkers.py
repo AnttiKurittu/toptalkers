@@ -8,7 +8,11 @@ def echo(t):
 # Regex for finding IP on line
 def ipgrep(line):
     out = re.findall( r'[0-9]+(?:\.[0-9]+){3}', line )
-    return out
+    try:
+        out = str(out[0])
+        return out
+    except IndexError:
+        return False
 
 unique_ip = {}
 
@@ -27,10 +31,10 @@ for line in log:
     i += 1
     ip = ipgrep(line)
     try:
-        s = unique_ip[ip[0]] + 1
+        s = unique_ip[ip] + 1
     except KeyError:
         s = 1
-    unique_ip.update({ip[0]: s})
+    unique_ip.update({ip: s})
 
 # Sort the entries with largest first.
 top_talkers = sorted(unique_ip.items(), key=operator.itemgetter(1), reverse = True)
@@ -54,12 +58,13 @@ echo("\n%s%s\n" % ("IP address".rjust(15), "hits".rjust(magnitude + 2)))
 for line in top_talkers:
     if int(line[1]) > (total / 100):
         i = 0
-        echo("%s%s " % (line[0].rjust(15), str(line[1]).rjust(magnitude + 2)))
-        # Draw comparison graphics
-        while i < (line[1] / (top_talkers[0][1] / 50)):
-            i += 1
-            echo(":")
-        echo("\r\n")
-echo("%s%s\n" % ("All".rjust(15), str(total).rjust(magnitude + 2)))
+        if line[0] != False:
+            echo("%s%s " % (line[0].rjust(15), str(line[1]).rjust(magnitude + 2)))
+            # Draw comparison graphics
+            while i < (line[1] / (top_talkers[0][1] / 50)):
+                i += 1
+                echo(":")
+            echo("\r\n")
+echo("%s%s\n" % ("Total lines".rjust(15), str(total).rjust(magnitude + 2)))
 
 exit()
